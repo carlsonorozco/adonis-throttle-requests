@@ -1,6 +1,7 @@
 # adonis-throttle-requests
 
 [![npm version](https://badge.fury.io/js/adonis-throttle-requests.svg)](https://badge.fury.io/js/adonis-throttle-requests)
+[![npm](https://img.shields.io/npm/dt/adonis-throttle-requests.svg)](https://www.npmjs.com/package/adonis-throttle-requests)
 [![Build Status](https://travis-ci.org/carlsonorozco/adonis-throttle-requests.svg?branch=master)](https://travis-ci.org/carlsonorozco/adonis-throttle-requests)
 [![dependencies Status](https://david-dm.org/carlsonorozco/adonis-throttle-requests/status.svg)](https://david-dm.org/carlsonorozco/adonis-throttle-requests)
 [![devDependencies Status](https://david-dm.org/carlsonorozco/adonis-throttle-requests/dev-status.svg)](https://david-dm.org/carlsonorozco/adonis-throttle-requests?type=dev)
