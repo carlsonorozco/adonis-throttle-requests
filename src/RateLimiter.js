@@ -10,7 +10,6 @@
 */
 
 class RateLimiter {
-
   /**
    * Create a new rate limiter instance.
    *
@@ -122,7 +121,6 @@ class RateLimiter {
     const lockTime = yield this.Cache.get(`${key}:lockout`)
     return lockTime - Math.floor(new Date() / 1000)
   }
-
 }
 
 module.exports = RateLimiter

@@ -12,7 +12,6 @@
 const ServiceProvider = require('adonis-fold').ServiceProvider
 
 class ThrottleRequestsProvider extends ServiceProvider {
-
   * register () {
     this._bindMiddleware()
   }
@@ -25,7 +24,6 @@ class ThrottleRequestsProvider extends ServiceProvider {
       return new ThrottleRequests(new RateLimiter(Cache))
     })
   }
-
 }
 
 module.exports = ThrottleRequestsProvider

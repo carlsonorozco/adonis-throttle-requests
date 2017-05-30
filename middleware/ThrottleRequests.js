@@ -10,7 +10,6 @@
 */
 
 class ThrottleRequests {
-
   /**
    * Create a new rate limiter instance.
    *
@@ -119,7 +118,6 @@ class ThrottleRequests {
     }
     return yield this.RateLimiter.retriesLeft(key, maxAttempts)
   }
-
 }
 
 module.exports = ThrottleRequests
