@@ -1,5 +1,7 @@
 # adonis-throttle-requests
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/carlsonorozco/adonis-throttle-requests.svg)](https://greenkeeper.io/)
+
 [![npm version](https://badge.fury.io/js/adonis-throttle-requests.svg)](https://badge.fury.io/js/adonis-throttle-requests)
 [![npm](https://img.shields.io/npm/dt/adonis-throttle-requests.svg)](https://www.npmjs.com/package/adonis-throttle-requests)
 [![Build Status](https://travis-ci.org/carlsonorozco/adonis-throttle-requests.svg?branch=master)](https://travis-ci.org/carlsonorozco/adonis-throttle-requests)
