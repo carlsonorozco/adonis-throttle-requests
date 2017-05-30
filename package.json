@@ -7,7 +7,7 @@
   "author": "Carlson Orozco <carlsonorozco@gmail.com>",
   "scripts": {
     "lint": "standard middleware/*.js src/*.js test/*.js providers/*.js",
-    "test": "standard && mocha --recursive --harmony_proxies"
+    "test": "standard && mocha --recursive"
   },
   "repository": {
     "type": "git",
