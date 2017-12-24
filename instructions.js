@@ -9,8 +9,6 @@
  * file that was distributed with this source code.
 */
 
-const path = require('path')
-
 module.exports = async function (cli) {
   try {
     // put instructions here
