@@ -16,7 +16,7 @@
     "test:local": "npm run test:cleanup && FORCE_COLOR=true DB=sqlite node bin/index.js --local",
     "test": "snyk test && nyc npm run test:local",
     "test:win": "set FORCE_COLOR=true && node bin/index.js --win",
-    "coverage": "nyc report --reporter=lcov --reporter=text-lcov | coveralls"
+    "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "repository": {
     "type": "git",
