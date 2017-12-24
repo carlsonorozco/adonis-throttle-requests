@@ -9,10 +9,8 @@
  * file that was distributed with this source code.
 */
 
-const config = module.exports = {}
+const test = require('japa')
 
-config[ 'cache.default' ] = 'object'
-config[ 'cache.stores' ] = {
-  driver: 'object'
-}
-config[ 'cache.prefix' ] = 'adonis'
+test.group('ThrottleRequests', group => {
+  test.skip('should lock opens immediately')
+})
