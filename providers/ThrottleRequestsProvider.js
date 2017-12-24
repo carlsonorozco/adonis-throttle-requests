@@ -20,7 +20,7 @@ class ThrottleRequestsProvider extends ServiceProvider {
    * @return {void}
    */
   register () {
-    this.app.bind('Adonis/Middleware/ThrottleRequests', app => {
+    this.app.singleton('Adonis/Middleware/ThrottleRequests', app => {
       const Cache = app.use('Adonis/Addons/Cache')
       const RateLimiter = require('../src/RateLimiter')
       const ThrottleRequests = require('../middleware/ThrottleRequests')

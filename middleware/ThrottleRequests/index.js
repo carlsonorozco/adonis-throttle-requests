@@ -32,7 +32,7 @@ class ThrottleRequests {
    *
    * @public
    */
-  async handle (request, response, next, maxAttempts = 60, decayMinutes = 1) {
+  async handle ({ request, response }, next, maxAttempts = 60, decayMinutes = 1) {
     const key = await this._resolveRequestSignature(request)
     if (await this.RateLimiter.tooManyAttempts(key, maxAttempts, decayMinutes)) {
       return await this._buildResponse(response, key, maxAttempts)
@@ -42,7 +42,7 @@ class ThrottleRequests {
       response, maxAttempts,
       await this._calculateRemainingAttempts(key, maxAttempts)
     )
-    await next
+    await next()
   }
 
   /**
@@ -53,7 +53,7 @@ class ThrottleRequests {
    *
    * @private
    */
-  async _resolveRequestSignature (request) {
+  _resolveRequestSignature (request) {
     const crypto = require('crypto')
     let generator = crypto.createHash('sha1')
     generator.update(`${request.method()}|${request.hostname()}|${request.url()}|${request.ip()}`)
@@ -93,7 +93,7 @@ class ThrottleRequests {
    *
    * @private
    */
-  async _addHeaders (response, maxAttempts, remainingAttempts, retryAfter = null) {
+  _addHeaders (response, maxAttempts, remainingAttempts, retryAfter = null) {
     response.header('X-RateLimit-Limit', maxAttempts)
     response.header('X-RateLimit-Remaining', remainingAttempts)
     if (retryAfter !== null) {
