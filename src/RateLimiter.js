@@ -30,15 +30,15 @@ class RateLimiter {
    *
    * @public
    */
-  * tooManyAttempts (key, maxAttempts, decayMinutes = 1) {
-    const hasKey = yield this.Cache.has(`${key}:lockout`)
+  async tooManyAttempts (key, maxAttempts, decayMinutes = 1) {
+    const hasKey = await this.Cache.has(`${key}:lockout`)
     if (hasKey) {
       return true
     }
-    const totalAttempts = yield this.attempts(key)
+    const totalAttempts = await this.attempts(key)
     if (totalAttempts > maxAttempts) {
-      yield this.Cache.add(`${key}:lockout`, Math.floor(new Date() / 1000) + (decayMinutes * 60), decayMinutes)
-      yield this.resetAttempts(key)
+      await this.Cache.add(`${key}:lockout`, Math.floor(new Date() / 1000) + (decayMinutes * 60), decayMinutes)
+      await this.resetAttempts(key)
       return true
     }
     return false
@@ -53,9 +53,9 @@ class RateLimiter {
    *
    * @public
    */
-  * hit (key, decayMinutes = 1) {
-    yield this.Cache.add(key, 1, decayMinutes)
-    return yield this.Cache.increment(key)
+  async hit (key, decayMinutes = 1) {
+    await this.Cache.add(key, 1, decayMinutes)
+    return await this.Cache.increment(key)
   }
 
   /**
@@ -66,8 +66,8 @@ class RateLimiter {
    *
    * @public
    */
-  * attempts (key) {
-    return yield this.Cache.get(key, 0)
+  async attempts (key) {
+    return await this.Cache.get(key, 0)
   }
 
   /**
@@ -78,8 +78,8 @@ class RateLimiter {
    *
    * @public
    */
-  * resetAttempts (key) {
-    return this.Cache.forget(key)
+  async resetAttempts (key) {
+    return await this.Cache.forget(key)
   }
 
   /**
@@ -91,8 +91,8 @@ class RateLimiter {
    *
    * @public
    */
-  * retriesLeft (key, maxAttempts) {
-    const attempts = yield this.attempts(key)
+  async retriesLeft (key, maxAttempts) {
+    const attempts = await this.attempts(key)
     return attempts === 0 ? maxAttempts : maxAttempts - attempts + 1
   }
 
@@ -104,9 +104,9 @@ class RateLimiter {
    *
    * @public
    */
-  * clear (key) {
+  async clear (key) {
     this.resetAttempts(key)
-    yield this.Cache.forget(`${key}:lockout`)
+    await this.Cache.forget(`${key}:lockout`)
   }
 
   /**
@@ -117,8 +117,8 @@ class RateLimiter {
    *
    * @public
    */
-  * availableIn (key) {
-    const lockTime = yield this.Cache.get(`${key}:lockout`)
+  async availableIn (key) {
+    const lockTime = await this.Cache.get(`${key}:lockout`)
     return lockTime - Math.floor(new Date() / 1000)
   }
 }
