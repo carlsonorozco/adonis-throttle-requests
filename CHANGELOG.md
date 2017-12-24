@@ -2,7 +2,6 @@
 
 ## 1.0.0
  - Support AdonisJS 4.0
- - Add some tests
  - Add SonarQube
  - Add Synk
  - Add Appveyor
