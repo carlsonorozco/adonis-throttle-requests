@@ -55,7 +55,7 @@ class RateLimiter {
    */
   async hit (key, decayMinutes = 1) {
     await this.Cache.add(key, 1, decayMinutes)
-    return await this.Cache.increment(key)
+    return this.Cache.increment(key)
   }
 
   /**
@@ -66,8 +66,8 @@ class RateLimiter {
    *
    * @public
    */
-  async attempts (key) {
-    return await this.Cache.get(key, 0)
+  attempts (key) {
+    return this.Cache.get(key, 0)
   }
 
   /**
@@ -78,8 +78,8 @@ class RateLimiter {
    *
    * @public
    */
-  async resetAttempts (key) {
-    return await this.Cache.forget(key)
+  resetAttempts (key) {
+    return this.Cache.forget(key)
   }
 
   /**

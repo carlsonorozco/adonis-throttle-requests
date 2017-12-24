@@ -35,7 +35,7 @@ class ThrottleRequests {
   async handle ({ request, response }, next, maxAttempts = 60, decayMinutes = 1) {
     const key = await this._resolveRequestSignature(request)
     if (await this.RateLimiter.tooManyAttempts(key, maxAttempts, decayMinutes)) {
-      return await this._buildResponse(response, key, maxAttempts)
+      return this._buildResponse(response, key, maxAttempts)
     }
     await this.RateLimiter.hit(key, decayMinutes)
     await this._addHeaders(
@@ -112,11 +112,11 @@ class ThrottleRequests {
    *
    * @private
    */
-  async _calculateRemainingAttempts (key, maxAttempts, retryAfter = null) {
+  _calculateRemainingAttempts (key, maxAttempts, retryAfter = null) {
     if (retryAfter !== null) {
       return 0
     }
-    return await this.RateLimiter.retriesLeft(key, maxAttempts)
+    return this.RateLimiter.retriesLeft(key, maxAttempts)
   }
 }
 
