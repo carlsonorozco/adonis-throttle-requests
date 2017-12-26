@@ -1,5 +1,12 @@
 # adonis-throttle-request Changelog
 
+## 1.0.0
+ - Support AdonisJS 4.0
+ - Add SonarQube
+ - Add Synk
+ - Add Appveyor
+ - Add Coveralls
+
 ## 0.1.4
  - Remove --harmony_proxies
 

@@ -1,7 +1,7 @@
 'use strict'
 
 /**
- * adonis-throttle-requests
+ * adonis-hashids
  *
  * (c) Carlson Orozco <carlsonorozco@gmail.com>
  *
@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
 */
 
-const config = module.exports = {}
-
-config[ 'cache.default' ] = 'object'
-config[ 'cache.stores' ] = {
-  driver: 'object'
+module.exports = async function (cli) {
+  try {
+    // put instructions here
+  } catch (error) {
+    // ignore error
+  }
 }
-config[ 'cache.prefix' ] = 'adonis'

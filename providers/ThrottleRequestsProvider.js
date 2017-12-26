@@ -9,15 +9,18 @@
  * file that was distributed with this source code.
 */
 
-const ServiceProvider = require('adonis-fold').ServiceProvider
+const { ServiceProvider } = require('@adonisjs/fold')
 
 class ThrottleRequestsProvider extends ServiceProvider {
-  * register () {
-    this._bindMiddleware()
-  }
-
-  _bindMiddleware () {
-    this.app.bind('Adonis/Middleware/ThrottleRequests', function (app) {
+  /**
+   * Register all the required providers
+   *
+   * @method register
+   *
+   * @return {void}
+   */
+  register () {
+    this.app.singleton('Adonis/Middleware/ThrottleRequests', app => {
       const Cache = app.use('Adonis/Addons/Cache')
       const RateLimiter = require('../src/RateLimiter')
       const ThrottleRequests = require('../middleware/ThrottleRequests')

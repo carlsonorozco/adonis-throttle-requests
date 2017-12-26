@@ -32,17 +32,17 @@ class ThrottleRequests {
    *
    * @public
    */
-  * handle (request, response, next, maxAttempts = 60, decayMinutes = 1) {
-    const key = yield this._resolveRequestSignature(request)
-    if (yield this.RateLimiter.tooManyAttempts(key, maxAttempts, decayMinutes)) {
-      return yield this._buildResponse(response, key, maxAttempts)
+  async handle ({ request, response }, next, [maxAttempts = 60, decayMinutes = 1]) {
+    const key = await this._resolveRequestSignature(request)
+    if (await this.RateLimiter.tooManyAttempts(key, maxAttempts)) {
+      return this._buildResponse(response, key, maxAttempts)
     }
-    yield this.RateLimiter.hit(key, decayMinutes)
-    yield this._addHeaders(
+    await this.RateLimiter.hit(key, decayMinutes)
+    await this._addHeaders(
       response, maxAttempts,
-      yield this._calculateRemainingAttempts(key, maxAttempts)
+      await this._calculateRemainingAttempts(key, maxAttempts)
     )
-    yield next
+    await next()
   }
 
   /**
@@ -53,7 +53,7 @@ class ThrottleRequests {
    *
    * @private
    */
-  * _resolveRequestSignature (request) {
+  _resolveRequestSignature (request) {
     const crypto = require('crypto')
     let generator = crypto.createHash('sha1')
     generator.update(`${request.method()}|${request.hostname()}|${request.url()}|${request.ip()}`)
@@ -70,12 +70,12 @@ class ThrottleRequests {
    *
    * @private
    */
-  * _buildResponse (response, key, maxAttempts) {
-    const retryAfter = yield this.RateLimiter.availableIn(key)
-    const remainingAttempts = yield this._calculateRemainingAttempts(
+  async _buildResponse (response, key, maxAttempts) {
+    const retryAfter = await this.RateLimiter.availableIn(key)
+    const remainingAttempts = await this._calculateRemainingAttempts(
       key, maxAttempts, retryAfter
     )
-    yield this._addHeaders(
+    await this._addHeaders(
       response, maxAttempts,
       remainingAttempts,
       retryAfter)
@@ -93,7 +93,7 @@ class ThrottleRequests {
    *
    * @private
    */
-  * _addHeaders (response, maxAttempts, remainingAttempts, retryAfter = null) {
+  _addHeaders (response, maxAttempts, remainingAttempts, retryAfter = null) {
     response.header('X-RateLimit-Limit', maxAttempts)
     response.header('X-RateLimit-Remaining', remainingAttempts)
     if (retryAfter !== null) {
@@ -112,11 +112,11 @@ class ThrottleRequests {
    *
    * @private
    */
-  * _calculateRemainingAttempts (key, maxAttempts, retryAfter = null) {
+  _calculateRemainingAttempts (key, maxAttempts, retryAfter = null) {
     if (retryAfter !== null) {
       return 0
     }
-    return yield this.RateLimiter.retriesLeft(key, maxAttempts)
+    return this.RateLimiter.retriesLeft(key, maxAttempts)
   }
 }
 

@@ -25,22 +25,21 @@ class RateLimiter {
    *
    * @param   {String}        key
    * @param   {Number}        maxAttempts
-   * @param   {Number}        decayMinutes [optional, default = 1]
    * @return  {Boolean}
    *
    * @public
    */
-  * tooManyAttempts (key, maxAttempts, decayMinutes = 1) {
-    const hasKey = yield this.Cache.has(`${key}:lockout`)
-    if (hasKey) {
-      return true
+  async tooManyAttempts (key, maxAttempts) {
+    const totalAttempts = await this.attempts(key)
+    if (totalAttempts >= maxAttempts) {
+      const hasKey = await this.Cache.has(`${key}:timer`)
+      if (hasKey) {
+        return true
+      }
+
+      await this.resetAttempts(key)
     }
-    const totalAttempts = yield this.attempts(key)
-    if (totalAttempts > maxAttempts) {
-      yield this.Cache.add(`${key}:lockout`, Math.floor(new Date() / 1000) + (decayMinutes * 60), decayMinutes)
-      yield this.resetAttempts(key)
-      return true
-    }
+
     return false
   }
 
@@ -53,9 +52,14 @@ class RateLimiter {
    *
    * @public
    */
-  * hit (key, decayMinutes = 1) {
-    yield this.Cache.add(key, 1, decayMinutes)
-    return yield this.Cache.increment(key)
+  async hit (key, decayMinutes = 1) {
+    await this.Cache.add(`${key}:timer`, Math.floor(new Date() / 1000) + (decayMinutes * 60), decayMinutes)
+    const added = await this.Cache.add(key, 0, decayMinutes)
+    const hits = await this.Cache.increment(key)
+    if (!added && hits === 1) {
+      await this.Cache.put(key, 1, decayMinutes)
+    }
+    return hits
   }
 
   /**
@@ -66,8 +70,8 @@ class RateLimiter {
    *
    * @public
    */
-  * attempts (key) {
-    return yield this.Cache.get(key, 0)
+  attempts (key) {
+    return this.Cache.get(key, 0)
   }
 
   /**
@@ -78,7 +82,7 @@ class RateLimiter {
    *
    * @public
    */
-  * resetAttempts (key) {
+  resetAttempts (key) {
     return this.Cache.forget(key)
   }
 
@@ -91,9 +95,9 @@ class RateLimiter {
    *
    * @public
    */
-  * retriesLeft (key, maxAttempts) {
-    const attempts = yield this.attempts(key)
-    return attempts === 0 ? maxAttempts : maxAttempts - attempts + 1
+  async retriesLeft (key, maxAttempts) {
+    const attempts = await this.attempts(key)
+    return maxAttempts - attempts
   }
 
   /**
@@ -104,9 +108,9 @@ class RateLimiter {
    *
    * @public
    */
-  * clear (key) {
-    this.resetAttempts(key)
-    yield this.Cache.forget(`${key}:lockout`)
+  async clear (key) {
+    await this.resetAttempts(key)
+    await this.Cache.forget(`${key}:timer`)
   }
 
   /**
@@ -117,8 +121,8 @@ class RateLimiter {
    *
    * @public
    */
-  * availableIn (key) {
-    const lockTime = yield this.Cache.get(`${key}:lockout`)
+  async availableIn (key) {
+    const lockTime = await this.Cache.get(`${key}:timer`)
     return lockTime - Math.floor(new Date() / 1000)
   }
 }
