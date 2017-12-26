@@ -34,7 +34,7 @@ class ThrottleRequests {
    */
   async handle ({ request, response }, next, maxAttempts = 60, decayMinutes = 1) {
     const key = await this._resolveRequestSignature(request)
-    if (await this.RateLimiter.tooManyAttempts(key, maxAttempts, decayMinutes)) {
+    if (await this.RateLimiter.tooManyAttempts(key, maxAttempts)) {
       return this._buildResponse(response, key, maxAttempts)
     }
     await this.RateLimiter.hit(key, decayMinutes)
