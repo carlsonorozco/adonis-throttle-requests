@@ -10,13 +10,12 @@
   "author": "Carlson Orozco <carlsonorozco@gmail.com>",
   "scripts": {
     "lint": "standard",
-    "pretest": "npm run test:cleanup && npm run lint",
-    "test:cleanup": "rm -rf test/functional/database && rm -rf test/unit/tmp",
-    "posttest": "npm run test:cleanup && npm run coverage",
-    "test:local": "npm run test:cleanup && FORCE_COLOR=true DB=sqlite node bin/index.js --local",
+    "pretest": "npm run lint",
+    "posttest": "npm run coverage",
+    "test:local": "FORCE_COLOR=true node bin/index.js --local",
     "test": "snyk test && nyc npm run test:local",
     "test:win": "set FORCE_COLOR=true && node bin/index.js --win",
-    "coverage": "nyc report --reporter=text-lcov | coveralls"
+    "coverage": "nyc report --reporter=lcov --reporter=text-lcov | coveralls"
   },
   "repository": {
     "type": "git",
@@ -24,6 +23,7 @@
   },
   "devDependencies": {
     "@adonisjs/fold": "^4.0.5",
+    "@adonisjs/sink": "^1.0.13",
     "adonis-cache": "^0.3.1",
     "coveralls": "^3.0.0",
     "cz-conventional-changelog": "^2.1.0",
@@ -46,8 +46,16 @@
   ],
   "standard": {
     "globals": [
-      "describe",
-      "it"
+      "use"
     ]
+  },
+  "nyc": {
+    "exclude": [
+      "**/*.spec.js",
+      "bin"
+    ]
+  },
+  "directories": {
+    "test": "test"
   }
 }
