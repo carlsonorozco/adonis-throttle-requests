@@ -25,22 +25,21 @@ class RateLimiter {
    *
    * @param   {String}        key
    * @param   {Number}        maxAttempts
-   * @param   {Number}        decayMinutes [optional, default = 1]
    * @return  {Boolean}
    *
    * @public
    */
-  async tooManyAttempts (key, maxAttempts, decayMinutes = 1) {
-    const hasKey = await this.Cache.has(`${key}:lockout`)
-    if (hasKey) {
-      return true
-    }
+  async tooManyAttempts (key, maxAttempts) {
     const totalAttempts = await this.attempts(key)
-    if (totalAttempts > maxAttempts) {
-      await this.Cache.add(`${key}:lockout`, Math.floor(new Date() / 1000) + (decayMinutes * 60), decayMinutes)
+    if (totalAttempts >= maxAttempts) {
+      const hasKey = await this.Cache.has(`${key}:timer`)
+      if (hasKey) {
+        return true
+      }
+
       await this.resetAttempts(key)
-      return true
     }
+
     return false
   }
 
@@ -54,8 +53,13 @@ class RateLimiter {
    * @public
    */
   async hit (key, decayMinutes = 1) {
-    await this.Cache.add(key, 1, decayMinutes)
-    return this.Cache.increment(key)
+    await this.Cache.add(`${key}:timer`, Math.floor(new Date() / 1000) + (decayMinutes * 60), decayMinutes)
+    const added = await this.Cache.add(key, 0, decayMinutes)
+    const hits = await this.Cache.increment(key)
+    if (!added && hits === 1) {
+      await this.Cache.put(key, 1, decayMinutes)
+    }
+    return hits
   }
 
   /**
@@ -93,7 +97,7 @@ class RateLimiter {
    */
   async retriesLeft (key, maxAttempts) {
     const attempts = await this.attempts(key)
-    return attempts === 0 ? maxAttempts : maxAttempts - attempts + 1
+    return maxAttempts - attempts
   }
 
   /**
@@ -105,8 +109,8 @@ class RateLimiter {
    * @public
    */
   async clear (key) {
-    this.resetAttempts(key)
-    await this.Cache.forget(`${key}:lockout`)
+    await this.resetAttempts(key)
+    await this.Cache.forget(`${key}:timer`)
   }
 
   /**
@@ -118,7 +122,7 @@ class RateLimiter {
    * @public
    */
   async availableIn (key) {
-    const lockTime = await this.Cache.get(`${key}:lockout`)
+    const lockTime = await this.Cache.get(`${key}:timer`)
     return lockTime - Math.floor(new Date() / 1000)
   }
 }
