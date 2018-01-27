@@ -1,5 +1,8 @@
 # adonis-throttle-request Changelog
 
+## 1.0.1
+ - Update packages
+
 ## 1.0.0
  - Support AdonisJS 4.0
  - Add SonarQube
