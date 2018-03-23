@@ -1,5 +1,9 @@
 # adonis-throttle-request Changelog
 
+## 1.0.2
+ - Update packages
+ - Add FOSSA
+
 ## 1.0.1
  - Update packages
 
