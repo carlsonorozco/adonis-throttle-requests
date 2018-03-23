@@ -13,6 +13,7 @@ Throttle Request Middleware for AdonisJS framework.
 [![dependencies Status](https://david-dm.org/carlsonorozco/adonis-throttle-requests/status.svg)](https://david-dm.org/carlsonorozco/adonis-throttle-requests)
 [![devDependencies Status](https://david-dm.org/carlsonorozco/adonis-throttle-requests/dev-status.svg)](https://david-dm.org/carlsonorozco/adonis-throttle-requests?type=dev)
 [![JavaScript Style Guide](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fcarlsonorozco%2Fadonis-throttle-requests.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fcarlsonorozco%2Fadonis-throttle-requests?ref=badge_shield)
 
 <img src="http://res.cloudinary.com/adonisjs/image/upload/q_100/v1497112678/adonis-purple_pzkmzt.svg" width="200px" align="right" hspace="30px" vspace="100px">
 
@@ -39,3 +40,5 @@ Thanks to the community of [AdonisJs](http://www.adonisjs.com/).
 ## Copyright and License
 
 Copyright (c) 2017 [Carlson Orozco](http://carlsonorozco.com/), [MIT](LICENSE.md) License
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fcarlsonorozco%2Fadonis-throttle-requests.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fcarlsonorozco%2Fadonis-throttle-requests?ref=badge_large)
