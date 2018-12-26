@@ -1,6 +1,6 @@
 {
   "name": "adonis-throttle-requests",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Throttle requests for AdonisJs framework",
   "homepage": "https://github.com/carlsonorozco/adonis-throttle-requests",
   "bugs": {
