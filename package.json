@@ -27,7 +27,7 @@
     "adonis-cache": "^0.3.2",
     "coveralls": "^3.0.2",
     "cz-conventional-changelog": "^2.1.0",
-    "japa": "^1.0.6",
+    "japa": "^2.0.7",
     "japa-cli": "^1.0.1",
     "nyc": "^13.1.0",
     "snyk": "^1.118.2",
